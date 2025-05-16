@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as VaultsCreateImport } from './routes/vaults/create'
 import { Route as DemoStoreImport } from './routes/demo.store'
 
 // Create/Update Routes
@@ -19,6 +20,12 @@ import { Route as DemoStoreImport } from './routes/demo.store'
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const VaultsCreateRoute = VaultsCreateImport.update({
+  id: '/vaults/create',
+  path: '/vaults/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoStoreImport
       parentRoute: typeof rootRoute
     }
+    '/vaults/create': {
+      id: '/vaults/create'
+      path: '/vaults/create'
+      fullPath: '/vaults/create'
+      preLoaderRoute: typeof VaultsCreateImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/demo/store': typeof DemoStoreRoute
+  '/vaults/create': typeof VaultsCreateRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/demo/store': typeof DemoStoreRoute
+  '/vaults/create': typeof VaultsCreateRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/demo/store': typeof DemoStoreRoute
+  '/vaults/create': typeof VaultsCreateRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/store'
+  fullPaths: '/' | '/demo/store' | '/vaults/create'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/store'
-  id: '__root__' | '/' | '/demo/store'
+  to: '/' | '/demo/store' | '/vaults/create'
+  id: '__root__' | '/' | '/demo/store' | '/vaults/create'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DemoStoreRoute: typeof DemoStoreRoute
+  VaultsCreateRoute: typeof VaultsCreateRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DemoStoreRoute: DemoStoreRoute,
+  VaultsCreateRoute: VaultsCreateRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/demo/store"
+        "/demo/store",
+        "/vaults/create"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/demo/store": {
       "filePath": "demo.store.tsx"
+    },
+    "/vaults/create": {
+      "filePath": "vaults/create.tsx"
     }
   }
 }
