@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as VaultsIndexImport } from './routes/vaults/index'
 import { Route as VaultsCreateImport } from './routes/vaults/create'
 import { Route as DemoStoreImport } from './routes/demo.store'
 
@@ -20,6 +21,12 @@ import { Route as DemoStoreImport } from './routes/demo.store'
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const VaultsIndexRoute = VaultsIndexImport.update({
+  id: '/vaults/',
+  path: '/vaults/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VaultsCreateImport
       parentRoute: typeof rootRoute
     }
+    '/vaults/': {
+      id: '/vaults/'
+      path: '/vaults'
+      fullPath: '/vaults'
+      preLoaderRoute: typeof VaultsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +83,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/demo/store': typeof DemoStoreRoute
   '/vaults/create': typeof VaultsCreateRoute
+  '/vaults': typeof VaultsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/demo/store': typeof DemoStoreRoute
   '/vaults/create': typeof VaultsCreateRoute
+  '/vaults': typeof VaultsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +98,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/demo/store': typeof DemoStoreRoute
   '/vaults/create': typeof VaultsCreateRoute
+  '/vaults/': typeof VaultsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/store' | '/vaults/create'
+  fullPaths: '/' | '/demo/store' | '/vaults/create' | '/vaults'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/store' | '/vaults/create'
-  id: '__root__' | '/' | '/demo/store' | '/vaults/create'
+  to: '/' | '/demo/store' | '/vaults/create' | '/vaults'
+  id: '__root__' | '/' | '/demo/store' | '/vaults/create' | '/vaults/'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +114,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DemoStoreRoute: typeof DemoStoreRoute
   VaultsCreateRoute: typeof VaultsCreateRoute
+  VaultsIndexRoute: typeof VaultsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DemoStoreRoute: DemoStoreRoute,
   VaultsCreateRoute: VaultsCreateRoute,
+  VaultsIndexRoute: VaultsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +136,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/demo/store",
-        "/vaults/create"
+        "/vaults/create",
+        "/vaults/"
       ]
     },
     "/": {
@@ -128,6 +148,9 @@ export const routeTree = rootRoute
     },
     "/vaults/create": {
       "filePath": "vaults/create.tsx"
+    },
+    "/vaults/": {
+      "filePath": "vaults/index.tsx"
     }
   }
 }

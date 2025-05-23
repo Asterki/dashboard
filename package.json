@@ -13,14 +13,6 @@
     "check": "prettier --write . && eslint --fix"
   },
   "dependencies": {
-    "@mantine/core": "^8.0.0",
-    "@mantine/dates": "^8.0.0",
-    "@mantine/dropzone": "^8.0.0",
-    "@mantine/form": "^8.0.0",
-    "@mantine/hooks": "^8.0.0",
-    "@mantine/modals": "^8.0.0",
-    "@mantine/notifications": "^8.0.0",
-    "@mantine/spotlight": "^8.0.0",
     "@mantine/tiptap": "^8.0.0",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-router": "^1.114.3",
@@ -36,6 +28,7 @@
     "dexie": "^4.0.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "tailwindcss": "^4.0.6"
   },
   "devDependencies": {
@@ -45,6 +38,7 @@
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "daisyui": "^5.0.37",
     "jsdom": "^26.0.0",
     "prettier": "^3.5.3",
     "typescript": "^5.7.2",
