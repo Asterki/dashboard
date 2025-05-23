@@ -1,78 +1,65 @@
 @import 'tailwindcss';
-@plugin "daisyui";
-@plugin "daisyui/theme" {
-  name: 'nord-dark';
+
+@plugin 'daisyui';
+@plugin 'daisyui/theme' {
+  name: 'minimal-soft-dark';
   default: true;
   prefersdark: true;
   color-scheme: dark;
 
-  /* Backgrounds */
-  --color-base-100: oklch(14% 0.07 260); /* #2E3440 - Polar Night */
-  --color-base-200: oklch(18% 0.06 260); /* Slightly lighter */
-  --color-base-300: oklch(22% 0.05 260);
+  /* === Backgrounds === */
+  --color-base-100: oklch(20% 0.02 260); /* Dark gray, not black */
+  --color-base-200: oklch(24% 0.02 260); /* Hover */
+  --color-base-300: oklch(28% 0.015 260); /* Surface / Card */
 
-  /* Text content */
-  --color-base-content: oklch(85% 0.02 250); /* #D8DEE9 - Snow Storm */
+  /* === Content === */
+  --color-base-content: oklch(90% 0.015 260); /* Off-white text */
 
-  /* Primary blue (Frost) */
-  --color-primary: oklch(58% 0.22 220); /* ~#81A1C1 */
-  --color-primary-content: oklch(90% 0.02 220); /* Light text on primary */
+  /* === Primary (Soft Blue) === */
+  --color-primary: oklch(60% 0.15 250); /* Muted soft blue */
+  --color-primary-content: oklch(96% 0.01 250);
 
-  /* Secondary teal-ish blue */
-  --color-secondary: oklch(55% 0.18 210); /* ~#88C0D0 */
-  --color-secondary-content: oklch(90% 0.02 210);
+  /* === Secondary (Muted Purple) === */
+  --color-secondary: oklch(58% 0.14 280);
+  --color-secondary-content: oklch(94% 0.01 280);
 
-  /* Accent green */
-  --color-accent: oklch(55% 0.2 130); /* ~#A3BE8C */
-  --color-accent-content: oklch(90% 0.02 130);
+  /* === Accent (Slate/Greenish-Gray) === */
+  --color-accent: oklch(52% 0.12 220);
+  --color-accent-content: oklch(94% 0.01 220);
 
-  /* Neutral gray */
-  --color-neutral: oklch(30% 0.03 260); /* Dark gray */
-  --color-neutral-content: oklch(85% 0.02 250);
+  /* === Neutral === */
+  --color-neutral: oklch(30% 0.015 260); /* Slightly elevated dark gray */
+  --color-neutral-content: oklch(85% 0.01 260);
 
-  /* Info (light blue) */
-  --color-info: oklch(60% 0.2 210); /* #5E81AC */
-  --color-info-content: oklch(90% 0.02 210);
+  /* === Feedback === */
+  --color-info: oklch(65% 0.14 240);     /* Calm blue */
+  --color-success: oklch(60% 0.14 140);  /* Calm green */
+  --color-warning: oklch(70% 0.12 85);   /* Subtle amber */
+  --color-error: oklch(60% 0.18 20);     /* Soft red */
 
-  /* Success (green) */
-  --color-success: oklch(55% 0.18 130); /* #A3BE8C */
-  --color-success-content: oklch(90% 0.02 130);
+  --color-info-content: oklch(96% 0.01 240);
+  --color-success-content: oklch(96% 0.01 140);
+  --color-warning-content: oklch(20% 0.01 85);
+  --color-error-content: oklch(96% 0.01 20);
 
-  /* Warning (yellow) */
-  --color-warning: oklch(70% 0.15 90); /* #EBCB8B */
-  --color-warning-content: oklch(15% 0.05 90);
-
-  /* Error (red) */
-  --color-error: oklch(45% 0.22 20); /* #BF616A */
-  --color-error-content: oklch(90% 0.02 20);
-
-  /* border radius */
-  --radius-selector: 1rem;
-  --radius-field: 0.25rem;
+  /* === Radius / Shadow === */
   --radius-box: 0.5rem;
-
-  /* base sizes */
-  --size-selector: 0.25rem;
-  --size-field: 0.25rem;
-
-  /* border size */
-  --border: 1px;
-
-  /* effects */
-  --depth: 1;
-  --noise: 0;
+  --radius-btn: 0.375rem;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 body {
-  @apply m-0;
+  @apply bg-base-100 text-base-content m-0;
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    Inter, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family:
-    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: Menlo, Monaco, 'Courier New', monospace;
+  font-size: 0.95em;
 }

@@ -11,28 +11,28 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as VaultsImport } from './routes/vaults'
+import { Route as PreferencesImport } from './routes/preferences'
 import { Route as IndexImport } from './routes/index'
-import { Route as VaultsIndexImport } from './routes/vaults/index'
-import { Route as VaultsCreateImport } from './routes/vaults/create'
 import { Route as DemoStoreImport } from './routes/demo.store'
 
 // Create/Update Routes
 
+const VaultsRoute = VaultsImport.update({
+  id: '/vaults',
+  path: '/vaults',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PreferencesRoute = PreferencesImport.update({
+  id: '/preferences',
+  path: '/preferences',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const VaultsIndexRoute = VaultsIndexImport.update({
-  id: '/vaults/',
-  path: '/vaults/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const VaultsCreateRoute = VaultsCreateImport.update({
-  id: '/vaults/create',
-  path: '/vaults/create',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -53,25 +53,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/preferences': {
+      id: '/preferences'
+      path: '/preferences'
+      fullPath: '/preferences'
+      preLoaderRoute: typeof PreferencesImport
+      parentRoute: typeof rootRoute
+    }
+    '/vaults': {
+      id: '/vaults'
+      path: '/vaults'
+      fullPath: '/vaults'
+      preLoaderRoute: typeof VaultsImport
+      parentRoute: typeof rootRoute
+    }
     '/demo/store': {
       id: '/demo/store'
       path: '/demo/store'
       fullPath: '/demo/store'
       preLoaderRoute: typeof DemoStoreImport
-      parentRoute: typeof rootRoute
-    }
-    '/vaults/create': {
-      id: '/vaults/create'
-      path: '/vaults/create'
-      fullPath: '/vaults/create'
-      preLoaderRoute: typeof VaultsCreateImport
-      parentRoute: typeof rootRoute
-    }
-    '/vaults/': {
-      id: '/vaults/'
-      path: '/vaults'
-      fullPath: '/vaults'
-      preLoaderRoute: typeof VaultsIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -81,47 +81,47 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/preferences': typeof PreferencesRoute
+  '/vaults': typeof VaultsRoute
   '/demo/store': typeof DemoStoreRoute
-  '/vaults/create': typeof VaultsCreateRoute
-  '/vaults': typeof VaultsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/preferences': typeof PreferencesRoute
+  '/vaults': typeof VaultsRoute
   '/demo/store': typeof DemoStoreRoute
-  '/vaults/create': typeof VaultsCreateRoute
-  '/vaults': typeof VaultsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/preferences': typeof PreferencesRoute
+  '/vaults': typeof VaultsRoute
   '/demo/store': typeof DemoStoreRoute
-  '/vaults/create': typeof VaultsCreateRoute
-  '/vaults/': typeof VaultsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/demo/store' | '/vaults/create' | '/vaults'
+  fullPaths: '/' | '/preferences' | '/vaults' | '/demo/store'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/store' | '/vaults/create' | '/vaults'
-  id: '__root__' | '/' | '/demo/store' | '/vaults/create' | '/vaults/'
+  to: '/' | '/preferences' | '/vaults' | '/demo/store'
+  id: '__root__' | '/' | '/preferences' | '/vaults' | '/demo/store'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  PreferencesRoute: typeof PreferencesRoute
+  VaultsRoute: typeof VaultsRoute
   DemoStoreRoute: typeof DemoStoreRoute
-  VaultsCreateRoute: typeof VaultsCreateRoute
-  VaultsIndexRoute: typeof VaultsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  PreferencesRoute: PreferencesRoute,
+  VaultsRoute: VaultsRoute,
   DemoStoreRoute: DemoStoreRoute,
-  VaultsCreateRoute: VaultsCreateRoute,
-  VaultsIndexRoute: VaultsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,22 +135,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/demo/store",
-        "/vaults/create",
-        "/vaults/"
+        "/preferences",
+        "/vaults",
+        "/demo/store"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/preferences": {
+      "filePath": "preferences.tsx"
+    },
+    "/vaults": {
+      "filePath": "vaults.tsx"
+    },
     "/demo/store": {
       "filePath": "demo.store.tsx"
-    },
-    "/vaults/create": {
-      "filePath": "vaults/create.tsx"
-    },
-    "/vaults/": {
-      "filePath": "vaults/index.tsx"
     }
   }
 }
