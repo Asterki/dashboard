@@ -53,3 +53,7 @@ export async function renameVault(id: number, name: string): Promise<void> {
   await db.vaults.update(id, { name })
   await loadVaults()
 }
+
+;(async () => {
+  await loadVaults()
+})()
