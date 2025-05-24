@@ -1,19 +1,21 @@
 import { z } from 'zod'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useStore } from '@tanstack/react-store'
 import { useState } from 'react'
 
-import { HiCheck, HiOutlinePlus } from 'react-icons/hi'
+import { HiOutlinePlus } from 'react-icons/hi'
 
 // Features
 import VaultsFeature from '@/features/vaults'
 import NotificationFeature from '@/features/notifications'
 
-export const Route = createFileRoute('/vaults')({
+export const Route = createFileRoute('/vaults/')({
   component: VaultsPage,
 })
 
 function VaultsPage() {
+  const navigate = useNavigate()
+
   const { vaults, vaultsLoading, vaultsError } = useStore(
     VaultsFeature.store.default,
   )
@@ -55,7 +57,11 @@ function VaultsPage() {
       return
     }
 
-    const result = await VaultsFeature.store.addVault(parsedData.data)
+    const result = await VaultsFeature.actions.create({
+      features: {},
+      description: parsedData.data.description,
+      name: parsedData.data.name,
+    })
 
     if (typeof result == 'number') {
       NotificationFeature.store.addNotification(
@@ -205,7 +211,16 @@ function VaultsPage() {
                 </p>
 
                 <div className="card-actions justify-end">
-                  <button className="btn btn-primary">Enter Vault</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      navigate({
+                        to: `/vaults/${vault.id}`,
+                      })
+                    }}
+                  >
+                    Enter Vault
+                  </button>
                 </div>
               </div>
             </div>

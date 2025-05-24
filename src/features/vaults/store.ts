@@ -1,6 +1,6 @@
 import { Store } from '@tanstack/store'
 import { db } from './db'
-import type { Vault } from './db'
+import type { Vault } from './'
 
 // Define the shape of the store
 interface VaultsState {
