@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useStore } from '@tanstack/react-store'
 import { useState } from 'react'
 
-import { HiCheck, HiOutlinePlus, HiOutlineTrash } from 'react-icons/hi'
+import { HiCheck, HiOutlinePlus } from 'react-icons/hi'
 
 // Features
 import VaultsFeature from '@/features/vaults'
@@ -17,37 +17,31 @@ function VaultsPage() {
   const { vaults, vaultsLoading, vaultsError } = useStore(
     VaultsFeature.store.default,
   )
-  const [deleteModalState, setDeleteModalState] = useState<{
-    vaultId: number | null
-  }>({
-    vaultId: null,
-  })
-  const handleDeleteVault = async (id: number) => {
-    await VaultsFeature.store.deleteVault(id)
-    NotificationFeature.store.addNotification(
-      'success',
-      'Vault deleted successfully',
-      5000,
-    )
-  }
 
   const createVaultSchema = z.object({
     name: z
       .string()
+      .trim()
       .min(1, 'Vault name is required')
       .max(50, 'Vault name must be less than 50 characters'),
+    description: z
+      .string()
+      .max(100, 'Description must be less than 100 characters'),
   })
   const [createModalState, setCreateModalState] = useState<{
     open: boolean
     name: string
+    description: string
   }>({
     open: false,
     name: '',
+    description: '',
   })
 
   const handleAddVault = async () => {
     const parsedData = createVaultSchema.safeParse({
       name: createModalState.name,
+      description: createModalState.description.trim(),
     })
 
     if (!parsedData.success) {
@@ -61,7 +55,7 @@ function VaultsPage() {
       return
     }
 
-    const result = await VaultsFeature.store.addVault(createModalState.name)
+    const result = await VaultsFeature.store.addVault(parsedData.data)
 
     if (typeof result == 'number') {
       NotificationFeature.store.addNotification(
@@ -80,61 +74,47 @@ function VaultsPage() {
     setCreateModalState({
       open: false,
       name: '',
+      description: '',
     })
   }
 
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
-      <dialog open={deleteModalState.vaultId !== null} className="modal z-40">
-        <div className="modal-box">
-          <h2 className="font-bold text-lg">Delete Vault</h2>
-          <p className="py-4">
-            Are you sure you want to delete this vault? This action cannot be
-            undone.
-          </p>
-
-          <div className="modal-action">
-            <div className="flex gap-2">
-              <button
-                className="btn"
-                onClick={() => {
-                  setDeleteModalState({ vaultId: null })
-                }}
-              >
-                Cancel
-              </button>
-
-              <button
-                className="btn btn-error"
-                onClick={() => {
-                  handleDeleteVault(deleteModalState.vaultId as number)
-                  setDeleteModalState({ vaultId: null })
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      </dialog>
-
       <dialog open={createModalState.open} className="modal z-40">
         <div className="modal-box">
           <h2 className="font-bold text-lg">Create Vault</h2>
-          <p className="py-4">Set the name of the vault you want to create.</p>
 
-          <input
-            type="text"
-            placeholder="Vault Name"
-            className="input input-bordered w-full"
-            value={createModalState.name}
-            onChange={(e) => {
-              setCreateModalState({
-                ...createModalState,
-                name: e.target.value,
-              })
-            }}
-          />
+          <fieldset className="fieldset">
+            <legend className="fieldset-legend">Vault Details</legend>
+
+            <label className="label">Name</label>
+            <input
+              type="text"
+              placeholder="Vault Name"
+              className="input input-bordered w-full"
+              value={createModalState.name}
+              onChange={(e) => {
+                setCreateModalState({
+                  ...createModalState,
+                  name: e.target.value,
+                })
+              }}
+            />
+
+            <label className="label mt-2">Description</label>
+            <input
+              type="text"
+              placeholder="Vault Description"
+              className="input input-bordered w-full"
+              value={createModalState.description}
+              onChange={(e) => {
+                setCreateModalState({
+                  ...createModalState,
+                  description: e.target.value,
+                })
+              }}
+            />
+          </fieldset>
 
           <div className="modal-action">
             <div className="flex gap-2">
@@ -144,6 +124,7 @@ function VaultsPage() {
                   setCreateModalState({
                     open: false,
                     name: '',
+                    description: '',
                   })
                 }}
               >
@@ -163,21 +144,17 @@ function VaultsPage() {
         </div>
       </dialog>
 
-      <div role="alert" className="alert" hidden>
-        <HiCheck className="h-6 w-6" />
-        <span>12 unread messages. Tap to see.</span>
-      </div>
-
-      <div className="w-full max-w-xl card bg-base-100 shadow-lg p-6 space-y-6">
+      <div className="w-full p-6 space-y-6 flex items-center flex-col justify-center">
         <h1 className="text-3xl font-bold text-center">Vaults</h1>
 
         {/* Add Vault */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 max-w-xl w-full">
           <button
             onClick={() => {
               setCreateModalState({
                 open: true,
                 name: '',
+                description: '',
               })
             }}
             className="btn btn-primary gap-2 w-full"
@@ -201,30 +178,42 @@ function VaultsPage() {
         )}
 
         {/* Vault List */}
-        <ul className="space-y-2">
+        <div className="flex flex-wrap w-full items-stretch justify-center gap-4">
           {vaults.map((vault) => (
-            <li
-              key={vault.id}
-              className="flex justify-between items-center p-3 border rounded bg-base-200"
-            >
-              <span className="truncate">{vault.name}</span>
-              <button
-                onClick={() => {
-                  setDeleteModalState({
-                    vaultId: vault.id as number,
-                  })
-                }}
-                className="btn btn-sm btn-ghost text-red-500 hover:text-red-700"
-                title="Delete"
-              >
-                <HiOutlineTrash />
-              </button>
-            </li>
+            <div key={vault.id} className="card bg-base-200 w-96 shadow-sm">
+              <figure>
+                <img
+                  src={'https://placehold.co/400x300'}
+                  alt="Vault image"
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://placehold.co/400'
+                  }}
+                  className="w-full h-auto object-cover rounded-lg"
+                />
+              </figure>
+              <div className="card-body">
+                <h2 className="card-title">{vault.name}</h2>
+                {vault.description !== '' && <p>{vault.description}</p>}
+                <p className="text-sm text-gray-500">
+                  <p>
+                    Created At: {new Date(vault.createdAt).toLocaleDateString()}
+                  </p>
+
+                  <p>
+                    Updated At: {new Date(vault.updatedAt).toLocaleTimeString()}
+                  </p>
+                </p>
+
+                <div className="card-actions justify-end">
+                  <button className="btn btn-primary">Enter Vault</button>
+                </div>
+              </div>
+            </div>
           ))}
           {vaults.length === 0 && !vaultsLoading && (
             <li className="text-gray-500 italic">No vaults yet.</li>
           )}
-        </ul>
+        </div>
       </div>
 
       <NotificationFeature.ContextHolder />

@@ -38,8 +38,17 @@ export async function loadVaults(): Promise<void> {
   }
 }
 
-export async function addVault(name: string): Promise<number> {
-  const id = await db.vaults.add({ name })
+export async function addVault(data: {
+  name: string
+  description: string
+}): Promise<number> {
+  const createdAt = new Date()
+  const id = await db.vaults.add({
+    ...data,
+    image: '',
+    createdAt,
+    updatedAt: createdAt,
+  })
   await loadVaults()
   return id
 }

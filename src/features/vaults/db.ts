@@ -1,7 +1,14 @@
 import Dexie from 'dexie'
 import type { Table } from 'dexie'
 
-export type Vault = { id?: number; name: string }
+export type Vault = {
+  id?: number
+  image: string;
+  name: string
+  description: string
+  createdAt: Date
+  updatedAt: Date
+}
 
 class VaultsDB extends Dexie {
   vaults!: Table<Vault, number>
