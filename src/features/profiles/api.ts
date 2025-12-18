@@ -1,6 +1,24 @@
 import { invoke } from "@tauri-apps/api/core";
+import { Profile } from "./feature-types";
 
-export async function create(data: { name: string; description?: string }) {
-  console.log("ewoiqk");
-  return invoke("greet", { name: data.name }); // Replace with actual implementation
+interface CreateProfileInput {
+  name: string;
+  description?: string;
+}
+interface CreateProfileOutput {
+  status: "success" | "error";
+  profile?: Profile;
+}
+export async function create(
+  data: CreateProfileInput,
+): Promise<CreateProfileOutput> {
+  const result = invoke<CreateProfileOutput>("profiles_create_command", {
+    input: data,
+  });
+
+  if (!result) {
+    return { status: "error" };
+  }
+
+  return result;
 }

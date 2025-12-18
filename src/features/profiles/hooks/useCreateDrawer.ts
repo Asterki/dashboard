@@ -13,7 +13,7 @@ export type CreateProfileDrawerState = CreateRequestBody & {
 export function useCreateDrawer({
   onSuccess,
 }: {
-  onSuccess: (vault: FeatureTypes.Vault) => void;
+  onSuccess: (profile: FeatureTypes.Profile) => void;
 }) {
   const { t } = useTranslation(["main"]);
   const { message } = App.useApp();
@@ -47,23 +47,21 @@ export function useCreateDrawer({
       loading: true,
     }));
     const result = await ProfilesFeature.api.create(parsedData.data);
-    console.log(result);
-    // if (result.status == "success" && result.profile !== undefined) {
-    //   message.success(
-    //     t("features:profiles.components.create-modal.messages.success"),
-    //   );
-    //   setState(defaultState);
-    //
-    //   // Then we add the variant to the list
-    //   if (onSuccess) onSuccess(result.profile);
-    // } else {
-    //   setState((prev) => ({
-    //     ...prev,
-    //     loading: false,
-    //   }));
-    //   message.error(t(`error-messages:${result.status}`));
-    // }
-    //
+    if (result.status == "success" && result.profile !== undefined) {
+      message.success(
+        t("features:profiles.components.create-modal.messages.success"),
+      );
+      setState(defaultState);
+
+      // Then we add the variant to the list
+      if (onSuccess) onSuccess(result.profile);
+    } else {
+      setState((prev) => ({
+        ...prev,
+        loading: false,
+      }));
+      message.error(t(`error-messages:${result.status}`));
+    }
   }, [state, message, t]);
 
   const openDrawer = useCallback(

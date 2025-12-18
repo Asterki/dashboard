@@ -1,4 +1,4 @@
-export interface Vault {
+export interface Profile {
   id: string;
 
   name: string;
