@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 
-import { Button, Drawer, Modal } from "antd";
+import { Button, Drawer, Form, Input } from "antd";
 import { FaPlus } from "react-icons/fa";
 
 import { CreateProfileDrawerState } from "../hooks/useCreateDrawer";
@@ -34,7 +34,26 @@ const Component: React.FC<CreateDrawerProps> = ({
         </Button>
       }
     >
-      {/* Drawer content goes here */}
+      <Form layout="vertical">
+        <Form.Item label={t("fields.name.label")} required>
+          <Input
+            value={state.name}
+            onChange={(e) =>
+              setState((prev) => ({ ...prev, name: e.target.value }))
+            }
+          />
+        </Form.Item>
+
+        <Form.Item label={t("fields.description.label")}>
+          <Input.TextArea
+            value={state.description}
+            onChange={(e) =>
+              setState((prev) => ({ ...prev, description: e.target.value }))
+            }
+            rows={4}
+          />
+        </Form.Item>
+      </Form>
     </Drawer>
   );
 };

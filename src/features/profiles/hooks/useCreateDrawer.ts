@@ -47,6 +47,7 @@ export function useCreateDrawer({
       loading: true,
     }));
     const result = await ProfilesFeature.api.create(parsedData.data);
+    console.log(result);
     // if (result.status == "success" && result.profile !== undefined) {
     //   message.success(
     //     t("features:profiles.components.create-modal.messages.success"),
@@ -62,6 +63,7 @@ export function useCreateDrawer({
     //   }));
     //   message.error(t(`error-messages:${result.status}`));
     // }
+    //
   }, [state, message, t]);
 
   const openDrawer = useCallback(

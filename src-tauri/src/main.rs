@@ -5,7 +5,10 @@ use dotenvy::dotenv;
 use sea_orm::{ConnectOptions, Database, TransactionTrait};
 use std::{env, time::Duration};
 
+mod commands;
+mod config;
 mod entity;
+
 use sea_orm::{ActiveModelTrait, Set};
 
 async fn create_user(db: &sea_orm::DatabaseConnection) {
