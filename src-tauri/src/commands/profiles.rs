@@ -1,7 +1,10 @@
-use sea_orm::DatabaseConnection;
+use sea_orm::{DatabaseConnection, EntityTrait};
 use serde::Serialize; // your SeaORM entity
 
-use crate::services::profiles::{CreateProfileInput, ProfileService};
+use crate::{
+    entity::profiles,
+    services::profiles::{CreateProfileInput, ProfileService},
+};
 
 // Outgoing command payload
 #[derive(Debug, Serialize)]
@@ -28,20 +31,26 @@ pub async fn profiles_create_command(
         })
 }
 
-// // Example: list all users
-// #[tauri::command]
-// pub async fn list_users_command(
-//     db: tauri::State<'_, DatabaseConnection>,
-// ) -> Result<Vec<CreateProfileOuput>, String> {
-//     let users = profiles::Entity::find()
-//         .all(&*db)
-//         .await
-//         .map_err(|e| e.to_string())?;
-//     Ok(users
-//         .into_iter()
-//         .map(|u| CreateProfileOuput {
-//             id: u.id,
-//             name: u.name,
-//         })
-//         .collect())
-// }
+// Outgoing command payload
+#[derive(Debug, Serialize)]
+pub struct ListProfilesCommandOutput {
+    pub status: String,
+    pub profiles: Vec<crate::entity::profiles::Model>,
+}
+
+// Example: list all users
+#[tauri::command]
+#[allow(dead_code)] // Used elsewhere
+pub async fn profiles_list_command(
+    db: tauri::State<'_, DatabaseConnection>,
+) -> Result<ListProfilesCommandOutput, String> {
+    let users = profiles::Entity::find()
+        .all(&*db)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(ListProfilesCommandOutput {
+        status: "success".to_string(),
+        profiles: users,
+    })
+}

@@ -2,10 +2,12 @@ import { useTranslation } from "react-i18next";
 import { App } from "antd";
 import { useState, useCallback } from "react";
 
-import ProfilesFeature, { FeatureTypes } from "../";
-import { CreateRequestBody } from "../schemas";
+import ProfilesFeature, { ModelTypes, APITypes } from "../";
 
-export type CreateProfileDrawerState = CreateRequestBody & {
+export type CreateProfileDrawerState = Omit<
+  APITypes.CreateRequestInput,
+  never
+> & {
   isOpen: boolean;
   loading: boolean;
 };
@@ -13,7 +15,7 @@ export type CreateProfileDrawerState = CreateRequestBody & {
 export function useCreateDrawer({
   onSuccess,
 }: {
-  onSuccess: (profile: FeatureTypes.Profile) => void;
+  onSuccess: (profile: ModelTypes.IProfile) => void;
 }) {
   const { t } = useTranslation(["main"]);
   const { message } = App.useApp();

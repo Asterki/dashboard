@@ -38,6 +38,7 @@ const Component: React.FC<CreateDrawerProps> = ({
         <Form.Item label={t("fields.name.label")} required>
           <Input
             value={state.name}
+            placeholder={t("fields.name.placeholder")}
             onChange={(e) =>
               setState((prev) => ({ ...prev, name: e.target.value }))
             }
@@ -47,6 +48,7 @@ const Component: React.FC<CreateDrawerProps> = ({
         <Form.Item label={t("fields.description.label")}>
           <Input.TextArea
             value={state.description}
+            placeholder={t("fields.description.placeholder")}
             onChange={(e) =>
               setState((prev) => ({ ...prev, description: e.target.value }))
             }

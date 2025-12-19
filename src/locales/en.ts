@@ -26,6 +26,25 @@ const translation = {
           actions: {
             create: "Create Profile",
           },
+          fields: {
+            name: {
+              label: "Profile Name",
+              placeholder: "Enter profile name",
+            },
+            description: {
+              label: "Profile Description",
+              placeholder: "Enter profile description (optional)",
+            },
+          },
+        },
+        listTable: {
+          fields: {
+            name: "Name",
+            description: "Description",
+          },
+          actions: {
+            select: "Select Profile",
+          },
         },
       },
     },

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
@@ -16,6 +16,7 @@ function LandingPage() {
   const navigate = useNavigate();
   const { t } = useTranslation(["profiles"], { keyPrefix: "select" });
 
+  // Create
   const {
     state: createProfileDrawerState,
     setState: setCreateProfileDrawerState,
@@ -30,6 +31,13 @@ function LandingPage() {
       });
     },
   });
+
+  const { profiles, fetchProfiles, profilessListState } =
+    ProfilesFeature.hooks.useList();
+
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
 
   return (
     <main className="min-h-screen bg-slate-800 text-gray-100 flex flex-col items-center py-24 px-4">
@@ -67,6 +75,20 @@ function LandingPage() {
         </div>
       </section>
 
+      <Divider className="my-16 border-slate-700" />
+
+      {/* Profiles List */}
+      <section className="w-full">
+        <ProfilesFeature.components.ListTable
+          profiles={profiles.profiles}
+          onProfileSelect={(profileId) =>
+            navigate({
+              to: "/profiles/$profileId",
+              params: { profileId: profileId },
+            })
+          }
+        />
+      </section>
       <Divider className="my-16 border-slate-700" />
 
       {/* Footer hint / empty state reinforcement */}

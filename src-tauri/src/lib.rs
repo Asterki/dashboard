@@ -12,7 +12,10 @@ pub async fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .manage(db)
-        .invoke_handler(tauri::generate_handler![profiles::profiles_create_command])
+        .invoke_handler(tauri::generate_handler![
+            profiles::profiles_create_command,
+            profiles::profiles_list_command
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

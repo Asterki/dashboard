@@ -1,5 +1,5 @@
 use crate::entity;
-use sea_orm::{ActiveModelTrait, DatabaseConnection, Set};
+use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, Set};
 use serde::Deserialize;
 
 #[allow(dead_code)]
@@ -26,10 +26,10 @@ impl ProfileService {
         input: CreateProfileInput,
     ) -> Result<CreateProfileOutput, sea_orm::DbErr> {
         let profile = entity::profiles::ActiveModel {
-            name: Set(input.name),
-            description: Set(input.description),
-            created_at: Set(chrono::Utc::now().to_utc()),
-            updated_at: Set(chrono::Utc::now().to_utc()),
+            name: Set(Some(input.name)),
+            description: Set(Some(input.description)),
+            created_at: Set(Some(chrono::Utc::now().timestamp())),
+            updated_at: Set(Some(chrono::Utc::now().timestamp())),
             ..Default::default()
         };
         let inserted = profile.insert(db).await?;
@@ -37,5 +37,13 @@ impl ProfileService {
             status: "success".to_string(),
             profile: inserted,
         })
+    }
+
+    pub async fn list_profiles(
+        db: &DatabaseConnection,
+    ) -> Result<Vec<entity::profiles::Model>, sea_orm::DbErr> {
+        let profiles: Vec<entity::profiles::Model> =
+            entity::profiles::Entity::find().all(db).await?;
+        Ok(profiles)
     }
 }
